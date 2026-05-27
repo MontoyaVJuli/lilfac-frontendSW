@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body, #root {
+        height: 100%;
+        background-color: #f5f0e8;
+        color: #1e1b2e;
+        font-family: 'IBM Plex Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f5f0e8; }
+    ::-webkit-scrollbar-thumb { background: #d6cfc4; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #7c6fcd; }
+}
+
+@layer components {
+    .field {
+        @apply w-full bg-[#faf7f2] border border-[#d6cfc4] rounded-lg px-4 py-3
+        text-[#1e1b2e] text-sm placeholder-[#8b86a0]
+        focus:outline-none focus:border-[#7c6fcd] focus:ring-1 focus:ring-[#7c6fcd]/40
+        transition-all duration-200;
+    }
+    .field-error {
+        @apply border-red-500/70 focus:border-red-500;
+    }
+    .btn-primary {
+        @apply w-full bg-[#7c6fcd] hover:bg-[#9d92d8] text-white font-bold
+        tracking-wider uppercase text-sm py-3 px-6 rounded-lg
+        transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
+    }
+    .btn-ghost {
+        @apply bg-transparent border border-[#d6cfc4] hover:border-[#7c6fcd]/50
+        text-[#4a4560] hover:text-[#7c6fcd] text-sm py-2 px-4
+        rounded-lg transition-all duration-200;
+    }
+    .btn-danger {
+        @apply bg-red-500/10 border border-red-500/30 hover:bg-red-500/20
+        text-red-600 text-sm py-2 px-4 rounded-lg transition-all duration-200;
+    }
+    .card {
+        @apply bg-[#faf7f2] border border-[#d6cfc4] rounded-xl;
+    }
+    .label {
+        @apply block text-xs font-mono font-medium text-[#7c6fcd] uppercase tracking-widest mb-1.5;
+    }
+    .err-msg {
+        @apply flex items-center gap-1.5 text-red-600 text-xs mt-1.5;
+    }
+}

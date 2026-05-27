@@ -1,0 +1,37 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "fullName": "Ana María Gómez Rodríguez",
+      "idType": "CC",
+      "idNumber": "1023456789",
+      "phone": "3001234567",
+      "phoneVerified": true,
+      "email": "ana.gomez@empresa.com",
+      "emailVerified": true,
+      "address": "Cra 7 #45-12, Bogotá"
+    },
+    {
+      "id": 2,
+      "fullName": "Carlos Eduardo Pérez",
+      "idType": "CE",
+      "idNumber": "987654321",
+      "phone": "3109876543",
+      "phoneVerified": true,
+      "email": "carlos.perez@empresa.com",
+      "emailVerified": true,
+      "address": "Av. El Dorado #68C-61, Bogotá"
+    },
+    {
+      "id": 3,
+      "fullName": "Juliana Montoya",
+      "idType": "CC",
+      "idNumber": "1234567890",
+      "phone": "3202509123",
+      "phoneVerified": true,
+      "email": "karenjulianamontoya@gmail.com",
+      "emailVerified": true,
+      "address": "Calle 40E, #84-56"
+    }
+  ]
+}
