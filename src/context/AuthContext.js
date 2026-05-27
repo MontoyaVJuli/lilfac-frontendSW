@@ -21,6 +21,11 @@ export function AuthProvider({ children }) {
     const login = useCallback(async (username, password, _turnstileToken) => {
         const data = await authService.login(username, password);
         localStorage.setItem("token", data.token);
+        if (data.refreshToken) {
+            localStorage.setItem("refreshToken", data.refreshToken);
+        } else {
+            localStorage.removeItem("refreshToken");
+        }
         localStorage.setItem("user", JSON.stringify(data.user));
         api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
         setUser(data.user);
@@ -29,13 +34,14 @@ export function AuthProvider({ children }) {
 
     const logout = useCallback(() => {
         localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
         delete api.defaults.headers.common["Authorization"];
         setUser(null);
     }, []);
 
     const isAdmin = useCallback(() => {
-        return user?.role === "ADMIN";
+        return user?.role === "ADMIN" || user?.roles?.includes("ADMIN");
     }, [user]);
 
     return (

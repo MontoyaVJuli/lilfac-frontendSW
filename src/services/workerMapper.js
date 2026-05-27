@@ -1,6 +1,7 @@
+import { normalizePhone } from "../utils/phone";
+
 const ID_TYPE_ENV_KEYS = {
-    CC:  "REACT_APP_ID_TYPE_CC",
-    CE:  "REACT_APP_ID_TYPE_CE",
+    CC:  "REACT_APP_ID_TYPE_CC",    CE:  "REACT_APP_ID_TYPE_CE",
     TI:  "REACT_APP_ID_TYPE_TI",
     PP:  "REACT_APP_ID_TYPE_PP",
     NIT: "REACT_APP_ID_TYPE_NIT",
@@ -31,7 +32,7 @@ export function toWorkerDto(employee) {
         name:        employee.fullName?.trim(),
         idType:      resolveIdTypeUuid(employee.idType),
         idNumber:    employee.idNumber,
-        phoneNumber: employee.phone,
+        phoneNumber: normalizePhone(employee.phone),
         mail:        employee.email,
         address:     employee.address,
     };

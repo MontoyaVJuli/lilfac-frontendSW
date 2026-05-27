@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Modal, OtpInput, Spinner } from "../ui";
@@ -11,21 +11,33 @@ export function OtpModal({ type, value, open, onClose, onSuccess }) {
     const [loading,   setLoading]   = useState(false);
     const [sending,   setSending]   = useState(false);
     const [countdown, setCountdown] = useState(0);
+    const countdownRef = useRef(null);
 
     const isPhone = type === "phone";
     const Icon    = isPhone ? Phone : Mail;
 
-    const startCountdown = () => {
+    const clearCountdown = useCallback(() => {
+        if (countdownRef.current) {
+            clearInterval(countdownRef.current);
+            countdownRef.current = null;
+        }
+    }, []);
+
+    const startCountdown = useCallback(() => {
+        clearCountdown();
         setCountdown(60);
-        const interval = setInterval(() => {
+        countdownRef.current = setInterval(() => {
             setCountdown((c) => {
-                if (c <= 1) { clearInterval(interval); return 0; }
+                if (c <= 1) {
+                    clearCountdown();
+                    return 0;
+                }
                 return c - 1;
             });
         }, 1000);
-    };
+    }, [clearCountdown]);
 
-    const handleSend = async () => {
+    const handleSend = useCallback(async () => {
         if (!value) return toast.error(isPhone ? t("otp.needPhone") : t("otp.needEmail"));
         setSending(true);
         try {
@@ -38,7 +50,19 @@ export function OtpModal({ type, value, open, onClose, onSuccess }) {
         } finally {
             setSending(false);
         }
-    };
+    }, [value, isPhone, t, startCountdown]);
+
+    useEffect(() => {
+        if (!open) {
+            setCode("");
+            setCountdown(0);
+            clearCountdown();
+            return;
+        }
+        handleSend();
+    }, [open, type, value, handleSend, clearCountdown]);
+
+    useEffect(() => () => clearCountdown(), [clearCountdown]);
 
     const handleVerify = async () => {
         if (code.length < 6) return toast.error(t("otp.needDigits"));

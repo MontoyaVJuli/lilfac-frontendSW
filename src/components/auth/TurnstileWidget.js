@@ -5,6 +5,15 @@ const SITE_KEY = process.env.REACT_APP_CF_TURNSTILE_SITE_KEY || "1x0000000000000
 export function TurnstileWidget({ onVerify, onError, onExpire }) {
     const containerRef = useRef(null);
     const widgetIdRef  = useRef(null);
+    const onVerifyRef  = useRef(onVerify);
+    const onErrorRef   = useRef(onError);
+    const onExpireRef  = useRef(onExpire);
+
+    useEffect(() => {
+        onVerifyRef.current = onVerify;
+        onErrorRef.current  = onError;
+        onExpireRef.current = onExpire;
+    }, [onVerify, onError, onExpire]);
 
     useEffect(() => {
         const render = () => {
@@ -14,9 +23,9 @@ export function TurnstileWidget({ onVerify, onError, onExpire }) {
             widgetIdRef.current = window.turnstile.render(containerRef.current, {
                 sitekey:            SITE_KEY,
                 theme:              "dark",
-                callback:           onVerify,
-                "error-callback":   onError,
-                "expired-callback": onExpire,
+                callback:           (token) => onVerifyRef.current?.(token),
+                "error-callback":   () => onErrorRef.current?.(),
+                "expired-callback": () => onExpireRef.current?.(),
             });
         };
 
